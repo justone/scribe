@@ -38,9 +38,9 @@
    "  -a, --arg1 arg1  First number to add."
    "  -b, --arg2 arg2  Second number to add."])
 
-(deftest test-simple-main
+(deftest test-basic-main
   (let [run-main (fn [opts args]
-                   (try (sm/simple opts args)
+                   (try (sm/basic opts args)
                         (catch Exception e
                           {:help (str/split-lines (.getMessage e))
                            :exit (-> e ex-data :babashka/exit)})))]

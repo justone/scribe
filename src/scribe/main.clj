@@ -7,7 +7,7 @@
   [filename]
   (.getName (io/file filename)))
 
-(defn simple
+(defn basic
   "Single-file script helper. This function will parse command line arguments and take care of displaying help and
   Takes a single map of options:
   * :help - Usage information to show in `--help` output. Can be multiple
@@ -23,7 +23,7 @@
   * :progname - (optional) The name of the script, inferred from the script
                 filename if not passed."
   ([opts]
-    (simple opts *command-line-args*))
+    (basic opts *command-line-args*))
   ([opts args]
    (let [{:keys [help cli-options validate-fn]} opts
          progname (or (:progname opts) (divine-progname (System/getProperty "babashka.file")))
