@@ -1,0 +1,9 @@
+{:aliases {:repl {:extra-deps {io.github.justone/cljdev {:sha "b1956efcbafb5e1b5e0fc9bfb5715c25e9efae5e"}}
+                  :exec-fn cljdev.repl/start}
+           :test {:main-opts ["-m" "kaocha.runner"]
+                  :extra-deps {lambdaisland/kaocha {:mvn/version "1.87.1366"}}}}
+ :paths ["src"]
+ :deps {cheshire/cheshire {:mvn/version "5.10.0"}
+        org.clojure/tools.cli {:mvn/version "1.0.206"}
+        babashka/process {:mvn/version "0.4.16"}
+        babashka/fs {:mvn/version "0.2.15"}}}
