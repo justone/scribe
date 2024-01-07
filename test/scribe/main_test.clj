@@ -10,7 +10,7 @@
 
            SCRIPT_NAME -a 2 -b 4
            SCRIPT_NAME -a 3 -b 22"
-   :progname "adder.clj"
+   :script-name "adder.clj"
    :cli-options [["-h" "--help" "Show help."]
                  ["-a" "--arg1 arg1" "First number to add." :missing "must supply first number." :parse-fn parse-long]
                  ["-b" "--arg2 arg2" "Second number to add." :missing "must supply second number." :parse-fn parse-long]]

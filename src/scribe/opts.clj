@@ -1,21 +1,31 @@
 (ns scribe.opts
-  (:require [clojure.string :as string]
+  (:require [clojure.java.io :as io]
+            [clojure.string :as string]
             [scribe.string]))
 
 (defn find-errors
-  [parsed]
+  [parsed usage]
   (let [{:keys [errors options]} parsed
         {:keys [help]} options]
     (cond
       help
-      {:exit 0}
+      {:message usage
+       :exit 0}
 
       errors
       {:message (string/join "\n" errors)
-       :exit 1}
-      )))
+       :exit 1})))
 
-(def help-fmt
+(defn divine-script-name
+  ([]
+   (or (some-> (System/getProperty "babashka.file")
+               divine-script-name)
+       ;; Fallback if we're using the REPL for development
+       "script-name-repl-fallback"))
+  ([filename]
+   (.getName (io/file filename))))
+
+(def ^:private help-fmt
   (scribe.string/dedent
     "    "
     "usage: %s [opts]
@@ -26,19 +36,16 @@
     %s"))
 
 (defn format-help
-  ([prog-ns parsed errors]
-   (format-help (str prog-ns)
-                (-> (meta prog-ns) :doc scribe.string/dedent)
-                parsed
-                errors))
-  ([progname help parsed errors]
-   (let [{:keys [summary]} parsed
+  ([errors parsed]
+   (format-help errors (divine-script-name) parsed))
+  ([errors script-name-or-ns parsed]
+   (let [script-name (str script-name-or-ns)
+         {:keys [summary]} parsed
          {:keys [message exit]} errors
-         final-message (or message
-                           (-> help
-                               scribe.string/dedent
-                               (string/replace "SCRIPT_NAME" progname)))]
-     {:help (format help-fmt progname final-message summary)
+         final-message (-> message
+                           scribe.string/dedent
+                           (string/replace "SCRIPT_NAME" script-name))]
+     {:help (format help-fmt script-name final-message summary)
       :exit exit})))
 
 (defn print-and-exit

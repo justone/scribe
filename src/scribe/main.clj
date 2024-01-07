@@ -1,11 +1,6 @@
 (ns scribe.main
-  (:require [clojure.java.io :as io]
-            [clojure.tools.cli :refer [parse-opts]]
+  (:require [clojure.tools.cli :refer [parse-opts]]
             [scribe.opts :as opts]))
-
-(defn divine-progname
-  [filename]
-  (.getName (io/file filename)))
 
 (defn basic
   "Single-file script helper. This function will parse command line arguments and take care of displaying help and
@@ -20,17 +15,18 @@
                    error, or nil to indicate no errors. The map keys are:
                    * :message - (optional) Message to be printed.
                    * :exit - The numeric exit code that the
-  * :progname - (optional) The name of the script, inferred from the script
-                filename if not passed."
+  * :script-name - (optional) The name of the script, inferred from the script
+                   filename if not passed."
   ([opts]
-    (basic opts *command-line-args*))
+   (basic opts *command-line-args*))
   ([opts args]
    (let [{:keys [help cli-options validate-fn]} opts
-         progname (or (:progname opts) (divine-progname (System/getProperty "babashka.file")))
+         script-name (or (:script-name opts)
+                         (opts/divine-script-name))
          parsed (parse-opts args cli-options)]
-     (or (when-some [errors (or (opts/find-errors parsed)
-                                (and validate-fn
-                                     (validate-fn parsed)))]
-           (->> (opts/format-help progname (or help "") parsed errors)
-                (opts/print-and-exit)))
+     (or (some-> (or (opts/find-errors parsed (or help ""))
+                     (and validate-fn
+                          (validate-fn parsed)))
+                 (opts/format-help script-name parsed)
+                 (opts/print-and-exit))
          parsed))))
