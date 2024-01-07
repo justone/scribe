@@ -1,9 +1,48 @@
 (ns scribe.opts
+  "A set of functions to handle command line options in an opinionated
+  functional manner. Here is the general strategy:
+
+  1. Args are parsed by clojure.tools.cli.
+  2. The parsed args are examined for errors and the --help flag with a pure
+     function.
+  3. If errors are found, an appropriate message (optionally with usage) is
+     assembled with a pure function.
+  4. The message is printed and the script exits.
+
+  Most of the above is pure, and therefore testable. Here's an example main
+  function:
+
+    (defn -main
+      [& args]
+      (let [parsed (parse-opts args [[\"-h\" \"--help\" \"Show help\"]
+                                     [\"-n\" \"--name NAME\" \"Name to use\" :default \"world\"]])
+            {:keys [name]} (:options parsed)]
+        (or (some-> (opts/find-errors parsed usage-text)
+                    (opts/format-help parsed)
+                    (opts/print-and-exit))
+            (println \"Hello\" name))))
+
+  For a more complete sample script, check out `samples` in the repository."
   (:require [clojure.java.io :as io]
             [clojure.string :as string]
             [scribe.string]))
 
 (defn find-errors
+  "Look for the most common of errors:
+  * `--help` was passed
+  * clojure.tools.cli detected errors
+
+  To detect other errors specific to a given script, wrap the call with an
+  `or`, like this:
+
+  (or (opts/find-errors parsed usage-text)
+      (find-errors parsed))
+
+  The script-specific find-errors function should return a map with information
+  about the error that occurred. The keys are:
+  * :message - (optional) Message to be printed
+  * :exit - The numeric exit code that should be returned
+  * :wrap"
   [parsed usage]
   (let [{:keys [errors options]} parsed
         {:keys [help]} options]
@@ -16,10 +55,12 @@
       {:message (string/join "\n" errors)
        :exit 1})))
 
-(defn divine-script-name
+(defn detect-script-name
+  "Detect the name of the currently running script, for usage in the printed
+  help."
   ([]
    (or (some-> (System/getProperty "babashka.file")
-               divine-script-name)
+               detect-script-name)
        ;; Fallback if we're using the REPL for development
        "script-name-repl-fallback"))
   ([filename]
@@ -27,7 +68,6 @@
 
 (def ^:private help-fmt
   (scribe.string/dedent
-    "    "
     "usage: %s [opts]
 
     %s
@@ -36,8 +76,10 @@
     %s"))
 
 (defn format-help
+  "Take an error (as returned from `find-errors`) and format the help message
+  that will be printed to the end user."
   ([errors parsed]
-   (format-help errors (divine-script-name) parsed))
+   (format-help errors (detect-script-name) parsed))
   ([errors script-name-or-ns parsed]
    (let [script-name (str script-name-or-ns)
          {:keys [summary]} parsed
@@ -49,5 +91,9 @@
       :exit exit})))
 
 (defn print-and-exit
+  "Print help message and exit. Accepts a map with `:help`
+  and `:exit` keys.
+
+  Uses the :babashka/exit ex-info trick to exit Babashka."
   [{:keys [help exit]}]
   (throw (ex-info help {:babashka/exit exit})))

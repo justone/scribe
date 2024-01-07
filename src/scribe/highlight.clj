@@ -66,6 +66,7 @@
     (fg string color)))
 
 (def default-opts
+  "Default options for add function."
   {:colors colors-for-dark
    :explicit {}
    :offset 0

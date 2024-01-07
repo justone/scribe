@@ -8,4 +8,9 @@
         :task (exec 'cognitect.test-runner.api/test)
         :exec-args {:dirs ["test"]}
         :org.babashka/cli {:coerce {:nses [:symbol]
-                                    :vars [:symbol]}}}}}
+                                    :vars [:symbol]}}}
+  quickdoc {:doc "Invoke quickdoc"
+            :extra-deps {io.github.borkdude/quickdoc {:git/sha "7c8bef54eda28367193ec433af01bb940114f012"}}
+            :task (exec 'quickdoc.api/quickdoc)
+            :exec-args {:git/branch "master"
+                        :github/repo "https://github.com/justone/scribe"}}}}

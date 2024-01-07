@@ -1,4 +1,5 @@
 (ns scribe.string
+  "String utilities."
   (:require [clojure.string :as string]))
 
 (defn- find-indent
@@ -11,6 +12,9 @@
     indent))
 
 (defn dedent
+  "Remove leading indent on strings. Typically called on strings defined in
+  scripts that are to be printed to the terminal. If leading indent is not
+  passed, it will be detected from the first line with leading whitespace."
   ([string]
    (dedent (find-indent string) string))
   ([indent string]
