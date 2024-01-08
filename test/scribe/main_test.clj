@@ -4,20 +4,20 @@
             [scribe.main :as sm]))
 
 (def opts
-  {:help "This script adds two numbers. Fancy, eh?
+  {:usage "This script adds two numbers. Fancy, eh?
 
-         Examples:
+          Examples:
 
-           SCRIPT_NAME -a 2 -b 4
-           SCRIPT_NAME -a 3 -b 22"
+            SCRIPT_NAME -a 2 -b 4
+            SCRIPT_NAME -a 3 -b 22"
    :script-name "adder.clj"
    :cli-options [["-h" "--help" "Show help."]
                  ["-a" "--arg1 arg1" "First number to add." :missing "must supply first number." :parse-fn parse-long]
                  ["-b" "--arg2 arg2" "Second number to add." :missing "must supply second number." :parse-fn parse-long]]
    :validate-fn (fn [{{:keys [arg1 arg2]} :options}]
-                  (cond (not arg1) {:message "arg1 must be a number" :exit 2}
-                        (not arg2) {:message "arg2 must be b number" :exit 2}
-                        (<= arg2 arg1)  {:message "arg2 must be greater than arg1" :exit 2}))})
+                  (cond (not arg1) {:message "arg1 must be a number" :exit 2 :wrap-context true}
+                        (not arg2) {:message "arg2 must be b number" :exit 2 :wrap-context true}
+                        (<= arg2 arg1)  {:message "arg2 must be greater than arg1" :exit 2 :wrap-context true}))})
 
 (def header
   ["usage: adder.clj [opts]"

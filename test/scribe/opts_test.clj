@@ -14,17 +14,16 @@
          (opts/validate {:errors ["one" "two"]} "usage")))
   (is (nil? (opts/validate {} "usage"))))
 
-
 (deftest format-help-test
   (is (= {:help "oops", :exit 1}
          (opts/format-help {:message "oops" :exit 1}
                            {:summary "-h help"})))
   (is (= {:help (string/join "\n"
-                             ["usage: script-name-repl-fallback [opts]"
+                             ["usage: test [opts]"
                               ""
-                              "oops"
-                              "here"
-                              "there"
+                              "multi"
+                              "line"
+                              "message"
                               ""
                               "options:"
                               "-h help"]),
@@ -33,5 +32,6 @@
                                      line
                                      message"
                             :exit 1 :wrap-context true}
+                           "test"
                            {:summary "-h help"})))
   )

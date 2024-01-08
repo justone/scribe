@@ -11,9 +11,9 @@
     -  [`basic`](#scribe.main/basic) - Single-file script helper.
 -  [`scribe.opts`](#scribe.opts)  - A set of functions to handle command line options in an opinionated functional manner.
     -  [`detect-script-name`](#scribe.opts/detect-script-name) - Detect the name of the currently running script, for usage in the printed help.
-    -  [`find-errors`](#scribe.opts/find-errors) - Look for the most common of errors: * <code>--help</code> was passed * clojure.tools.cli detected errors To detect other errors specific to a given script, wrap the call with an <code>or</code>, like this: (or (opts/find-errors parsed usage-text) (find-errors parsed)) The script-specific find-errors function should return a map with information about the error that occurred.
-    -  [`format-help`](#scribe.opts/format-help) - Take an error (as returned from <code>find-errors</code>) and format the help message that will be printed to the end user.
+    -  [`format-help`](#scribe.opts/format-help) - Take an error (as returned from <code>validate</code>) and format the help message that will be printed to the end user.
     -  [`print-and-exit`](#scribe.opts/print-and-exit) - Print help message and exit.
+    -  [`validate`](#scribe.opts/validate) - Look for the most common of errors: * <code>--help</code> was passed * clojure.tools.cli detected errors To detect other errors specific to a given script, wrap the call with an <code>or</code>, like this: (or (opts/validate parsed usage-text) (script-specific-validate parsed)) The script-specific-validate function should return a map with information about the error that occurred.
 -  [`scribe.parse`](#scribe.parse) 
     -  [`custom-parser`](#scribe.parse/custom-parser)
     -  [`default-opts`](#scribe.parse/default-opts)
@@ -25,7 +25,8 @@
 # <a name="scribe.highlight">scribe.highlight</a>
 
 
-Utilities for highlighting portions of strings with color.
+Utilities for highlighting portions of strings with color. Primary
+  entrypoint is the [`add`](#scribe.highlight/add) function.
 
 
 
@@ -53,7 +54,7 @@ Highlight regex matches in line string by adding color. All instances of the
                 this to true can help differentiate matches that share a common
                 prefix.
   
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L75-L96">Source</a></sub></p>
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L76-L97">Source</a></sub></p>
 
 ## <a name="scribe.highlight/bg">`bg`</a><a name="scribe.highlight/bg"></a>
 ``` clojure
@@ -63,19 +64,19 @@ Highlight regex matches in line string by adding color. All instances of the
 
 Return a string wrapped in the proper escape codes to set the background
   color in the passed string.
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L48-L52">Source</a></sub></p>
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L49-L53">Source</a></sub></p>
 
 ## <a name="scribe.highlight/colors-for-dark">`colors-for-dark`</a><a name="scribe.highlight/colors-for-dark"></a>
 
 
 
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L27-L27">Source</a></sub></p>
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L28-L28">Source</a></sub></p>
 
 ## <a name="scribe.highlight/colors-for-light">`colors-for-light`</a><a name="scribe.highlight/colors-for-light"></a>
 
 
 
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L30-L30">Source</a></sub></p>
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L31-L31">Source</a></sub></p>
 
 ## <a name="scribe.highlight/default-opts">`default-opts`</a><a name="scribe.highlight/default-opts"></a>
 
@@ -83,7 +84,7 @@ Return a string wrapped in the proper escape codes to set the background
 
 
 Default options for add function.
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L68-L73">Source</a></sub></p>
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L69-L74">Source</a></sub></p>
 
 ## <a name="scribe.highlight/fg">`fg`</a><a name="scribe.highlight/fg"></a>
 ``` clojure
@@ -93,7 +94,7 @@ Default options for add function.
 
 Return a string wrapped in the proper escape codes to set the foreground
   color in the passed string.
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L42-L46">Source</a></sub></p>
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L43-L47">Source</a></sub></p>
 
 ## <a name="scribe.highlight/rgb-code">`rgb-code`</a><a name="scribe.highlight/rgb-code"></a>
 ``` clojure
@@ -104,7 +105,7 @@ Return a string wrapped in the proper escape codes to set the foreground
 Generate 8-bit RGB code.
 
   From: https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L8-L16">Source</a></sub></p>
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L9-L17">Source</a></sub></p>
 
 -----
 # <a name="scribe.main">scribe.main</a>
@@ -133,13 +134,12 @@ Single-file script helper. This function will parse command line arguments
   * :cli-options - Argument parsing configuration for clojure.tools.cli/parse-opts.
   * :validate-fn - (optional) A function that takes the result of
                    clojure.tools.cli/parse-opts to further validate the command
-                   line arguments. This function should return a map to indicate an
-                   error, or nil to indicate no errors. The map keys are:
-                   * :message - (optional) Message to be printed
-                   * :exit - The numeric exit code that should be returned
+                   line arguments. This function should return the same
+                   information that the built-in validate (in [`scribe.opts`](#scribe.opts))
+                   function returns.
   * :script-name - (optional) The name of the script, inferred from the script
                    filename if not passed.
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/main.clj#L7-L36">Source</a></sub></p>
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/main.clj#L7-L35">Source</a></sub></p>
 
 -----
 # <a name="scribe.opts">scribe.opts</a>
@@ -163,7 +163,7 @@ A set of functions to handle command line options in an opinionated
       (let [parsed (parse-opts args [["-h" "--help" "Show help"]
                                      ["-n" "--name NAME" "Name to use" :default "world"]])
             {:keys [name]} (:options parsed)]
-        (or (some-> (opts/find-errors parsed usage-text)
+        (or (some-> (opts/validate parsed usage-text)
                     (opts/format-help parsed)
                     (opts/print-and-exit))
             (println "Hello" name))))
@@ -182,30 +182,7 @@ A set of functions to handle command line options in an opinionated
 
 Detect the name of the currently running script, for usage in the printed
   help.
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/opts.clj#L58-L67">Source</a></sub></p>
-
-## <a name="scribe.opts/find-errors">`find-errors`</a><a name="scribe.opts/find-errors"></a>
-``` clojure
-
-(find-errors parsed usage)
-```
-
-Look for the most common of errors:
-  * `--help` was passed
-  * clojure.tools.cli detected errors
-
-  To detect other errors specific to a given script, wrap the call with an
-  `or`, like this:
-
-  (or (opts/find-errors parsed usage-text)
-      (find-errors parsed))
-
-  The script-specific find-errors function should return a map with information
-  about the error that occurred. The keys are:
-  * :message - (optional) Message to be printed
-  * :exit - The numeric exit code that should be returned
-  * :wrap
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/opts.clj#L30-L56">Source</a></sub></p>
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/opts.clj#L61-L70">Source</a></sub></p>
 
 ## <a name="scribe.opts/format-help">`format-help`</a><a name="scribe.opts/format-help"></a>
 ``` clojure
@@ -214,9 +191,9 @@ Look for the most common of errors:
 (format-help errors script-name-or-ns parsed)
 ```
 
-Take an error (as returned from [`find-errors`](#scribe.opts/find-errors)) and format the help message
+Take an error (as returned from [`validate`](#scribe.opts/validate)) and format the help message
   that will be printed to the end user.
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/opts.clj#L78-L91">Source</a></sub></p>
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/opts.clj#L81-L96">Source</a></sub></p>
 
 ## <a name="scribe.opts/print-and-exit">`print-and-exit`</a><a name="scribe.opts/print-and-exit"></a>
 ``` clojure
@@ -228,7 +205,31 @@ Print help message and exit. Accepts a map with `:help`
   and `:exit` keys.
 
   Uses the :babashka/exit ex-info trick to exit Babashka.
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/opts.clj#L93-L99">Source</a></sub></p>
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/opts.clj#L98-L104">Source</a></sub></p>
+
+## <a name="scribe.opts/validate">`validate`</a><a name="scribe.opts/validate"></a>
+``` clojure
+
+(validate parsed usage)
+```
+
+Look for the most common of errors:
+  * `--help` was passed
+  * clojure.tools.cli detected errors
+
+  To detect other errors specific to a given script, wrap the call with an
+  `or`, like this:
+
+  (or (opts/validate parsed usage-text)
+      (script-specific-validate parsed))
+
+  The script-specific-validate function should return a map with information
+  about the error that occurred. The keys are:
+  * :message - (optional) Message to be printed
+  * :exit - The numeric exit code that should be returned
+  * :wrap-context - Whether or not to wrap the message with script help heading
+                    and options documentation
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/opts.clj#L30-L59">Source</a></sub></p>
 
 -----
 # <a name="scribe.parse">scribe.parse</a>
