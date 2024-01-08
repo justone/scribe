@@ -1,5 +1,6 @@
 (ns scribe.highlight
-  "Utilities for highlighting portions of strings with color."
+  "Utilities for highlighting portions of strings with color. Primary
+  entrypoint is the `add` function."
   (:require [clojure.string :as string]))
 
 ;; RGB color selection and DJB2 hashing is a direct port from the original

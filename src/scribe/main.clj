@@ -15,10 +15,9 @@
   * :cli-options - Argument parsing configuration for clojure.tools.cli/parse-opts.
   * :validate-fn - (optional) A function that takes the result of
                    clojure.tools.cli/parse-opts to further validate the command
-                   line arguments. This function should return a map to indicate an
-                   error, or nil to indicate no errors. The map keys are:
-                   * :message - (optional) Message to be printed
-                   * :exit - The numeric exit code that should be returned
+                   line arguments. This function should return the same
+                   information that the built-in validate (in `scribe.opts`)
+                   function returns.
   * :script-name - (optional) The name of the script, inferred from the script
                    filename if not passed."
   ([opts]
@@ -28,7 +27,7 @@
          script-name (or (:script-name opts)
                          (opts/detect-script-name))
          parsed (parse-opts args cli-options)]
-     (or (some-> (or (opts/find-errors parsed (or usage ""))
+     (or (some-> (or (opts/validate parsed (or usage ""))
                      (and validate-fn
                           (validate-fn parsed)))
                  (opts/format-help script-name parsed)
