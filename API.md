@@ -44,17 +44,16 @@ Highlight regex matches in line string by adding color. All instances of the
   multiple runs.
 
   Options include:
-  * :colors   - Which set of colors to use. Default is colors suitable for a
-                dark background (colors-for-dark). For light backgrounds, use
-                colors-for-light.
-  * :explicit - Explicit colors for specific matched strings. Map of string to
-                color code.
-  * :offset   - Additional offset after calculating color code. Defaults to 0.
-  * :reverse? - Should matches be reversed before selecting a color. Setting
-                this to true can help differentiate matches that share a common
-                prefix.
-  
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L76-L97">Source</a></sub></p>
+  * `:colors`   - Which set of colors to use. Default is colors suitable for a
+                  dark background (colors-for-dark). For light backgrounds, use
+                  colors-for-light.
+  * `:explicit` - Explicit colors for specific matched strings. Map of string to
+                  color code.
+  * `:offset`   - Additional offset after calculating color code. Defaults to 0.
+  * `:reverse?` - Should matches be reversed before selecting a color. Setting
+                  this to true can help differentiate matches that share a common
+                  prefix.
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L76-L96">Source</a></sub></p>
 
 ## <a name="scribe.highlight/bg">`bg`</a><a name="scribe.highlight/bg"></a>
 ``` clojure

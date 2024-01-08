@@ -80,16 +80,15 @@
   multiple runs.
 
   Options include:
-  * :colors   - Which set of colors to use. Default is colors suitable for a
-                dark background (colors-for-dark). For light backgrounds, use
-                colors-for-light.
-  * :explicit - Explicit colors for specific matched strings. Map of string to
-                color code.
-  * :offset   - Additional offset after calculating color code. Defaults to 0.
-  * :reverse? - Should matches be reversed before selecting a color. Setting
-                this to true can help differentiate matches that share a common
-                prefix.
-  "
+  * `:colors`   - Which set of colors to use. Default is colors suitable for a
+                  dark background (colors-for-dark). For light backgrounds, use
+                  colors-for-light.
+  * `:explicit` - Explicit colors for specific matched strings. Map of string to
+                  color code.
+  * `:offset`   - Additional offset after calculating color code. Defaults to 0.
+  * `:reverse?` - Should matches be reversed before selecting a color. Setting
+                  this to true can help differentiate matches that share a common
+                  prefix."
   ([string regex]
    (add string regex nil))
   ([string regex opts]
