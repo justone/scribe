@@ -14,10 +14,6 @@
     -  [`format-help`](#scribe.opts/format-help) - Take an error (as returned from <code>validate</code>) and format the help message that will be printed to the end user.
     -  [`print-and-exit`](#scribe.opts/print-and-exit) - Print help message and exit.
     -  [`validate`](#scribe.opts/validate) - Look for the most common of errors: * <code>--help</code> was passed * clojure.tools.cli detected errors To detect other errors specific to a given script, wrap the call with an <code>or</code>, like this: (or (opts/validate parsed usage-text) (script-specific-validate parsed)) The script-specific-validate function should return a map with information about the error that occurred.
--  [`scribe.parse`](#scribe.parse) 
-    -  [`custom-parser`](#scribe.parse/custom-parser)
-    -  [`default-opts`](#scribe.parse/default-opts)
-    -  [`default-parse`](#scribe.parse/default-parse) - Parse a single line using default options.
 -  [`scribe.string`](#scribe.string)  - String utilities.
     -  [`dedent`](#scribe.string/dedent) - Remove leading indent on strings.
 
@@ -229,39 +225,6 @@ Look for the most common of errors:
   * :wrap-context - Whether or not to wrap the message with script help heading
                     and options documentation
 <p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/opts.clj#L30-L59">Source</a></sub></p>
-
------
-# <a name="scribe.parse">scribe.parse</a>
-
-
-
-
-
-
-## <a name="scribe.parse/custom-parser">`custom-parser`</a><a name="scribe.parse/custom-parser"></a>
-``` clojure
-
-(custom-parser opts)
-```
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/parse.clj#L26-L45">Source</a></sub></p>
-
-## <a name="scribe.parse/default-opts">`default-opts`</a><a name="scribe.parse/default-opts"></a>
-
-
-
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/parse.clj#L5-L6">Source</a></sub></p>
-
-## <a name="scribe.parse/default-parse">`default-parse`</a><a name="scribe.parse/default-parse"></a>
-``` clojure
-
-(default-parse line)
-```
-
-
-
-
-Parse a single line using default options.
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/parse.clj#L47-L51">Source</a></sub></p>
 
 -----
 # <a name="scribe.string">scribe.string</a>
