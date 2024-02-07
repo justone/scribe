@@ -22,7 +22,7 @@
   (let [parsed (parse-opts args [["-h" "--help" "Show help"]
                                  ["-n" "--name NAME" "Name to use" :default "world"]])
         {:keys [name]} (:options parsed)]
-    (or (some-> (opts/find-errors parsed usage-text)
+    (or (some-> (opts/validate parsed usage-text)
                 (opts/format-help parsed)
                 (opts/print-and-exit))
         (println "Hello" name))))
