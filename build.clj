@@ -54,12 +54,12 @@
 
 (defn clean
   "TBD"
-  []
+  [_opts]
   (b/delete {:path "target"}))
 
 (defn test
   "TBD"
-  []
+  [_opts]
   (doseq [cmd [["clojure" "-M:test"]
                ["bb" "test"]]
           :let [_ (println "Running:" cmd)
@@ -84,8 +84,8 @@
                 :pom-file (b/pom-path (select-keys opts [:lib :class-dir]))})))
 
 (comment
-  (clean)
-  (test)
+  (clean nil)
+  (test nil)
   (jar {:snapshot true})
   (jar {:snapshot false})
   )
