@@ -25,10 +25,14 @@
     (rgb-code r g b)))
 
 ;; Cut off the dark corner of the cube for dark terminals...
-(def colors-for-dark (make-colors #(> % 3)))
+(def colors-for-dark
+  "Colors that look good on a dark terminal."
+  (make-colors #(> % 3)))
 
 ;; ...and cut off the light corner for light terminals
-(def colors-for-light (make-colors #(< % 11)))
+(def colors-for-light
+  "Colors that look good on a light terminal."
+  (make-colors #(< % 11)))
 
 (defn- djb2
   [string]
@@ -43,14 +47,14 @@
 (defn fg
   "Return a string wrapped in the proper escape codes to set the foreground
   color in the passed string."
-  [string color]
-  (format "\033[38;5;%dm%s\033[0m" color string))
+  [string color-code]
+  (format "\033[38;5;%dm%s\033[0m" color-code string))
 
 (defn bg
   "Return a string wrapped in the proper escape codes to set the background
   color in the passed string."
-  [string color]
-  (format "\033[48;5;%dm%s\033[0m" color string))
+  [string color-code]
+  (format "\033[48;5;%dm%s\033[0m" color-code string))
 
 (defn- wrap
   [match opts]
@@ -68,10 +72,24 @@
 
 (def default-opts
   "Default options for add function."
-  {:colors colors-for-dark
+  {:colors :colors-for-dark
    :explicit {}
    :offset 0
    :reverse? false})
+
+(def ^:private keyword-colors
+  {:colors-for-dark colors-for-dark
+   :colors-for-light colors-for-light})
+
+(defn- finalize-opts
+  [opts]
+  (-> (merge default-opts opts)
+      (update :colors (fn [color-opt]
+                        (let [default-colors (keyword-colors (:colors default-opts))]
+                          (cond
+                            (coll? color-opt) color-opt
+                            (keyword? color-opt) (or (keyword-colors color-opt) default-colors)
+                            :else default-colors))))))
 
 (defn add
   "Highlight regex matches in line string by adding color. All instances of the
@@ -80,9 +98,9 @@
   multiple runs.
 
   Options include:
-  * `:colors`   - Which set of colors to use. Default is colors suitable for a
-                  dark background (colors-for-dark). For light backgrounds, use
-                  colors-for-light.
+  * `:colors`   - Which set of colors to use. Can be either a keyword or vector
+                  of colors. Default is colors suitable for a dark background
+                  (`:colors-for-dark`). For light backgrounds, use `:colors-for-light`.
   * `:explicit` - Explicit colors for specific matched strings. Map of string to
                   color code.
   * `:offset`   - Additional offset after calculating color code. Defaults to 0.
@@ -92,5 +110,5 @@
   ([string regex]
    (add string regex nil))
   ([string regex opts]
-   (let [final-opts (merge default-opts opts)]
+   (let [final-opts (finalize-opts opts)]
      (string/replace string regex #(wrap % final-opts)))))

@@ -2,8 +2,8 @@
 -  [`scribe.highlight`](#scribe.highlight)  - Utilities for highlighting portions of strings with color.
     -  [`add`](#scribe.highlight/add) - Highlight regex matches in line string by adding color.
     -  [`bg`](#scribe.highlight/bg) - Return a string wrapped in the proper escape codes to set the background color in the passed string.
-    -  [`colors-for-dark`](#scribe.highlight/colors-for-dark)
-    -  [`colors-for-light`](#scribe.highlight/colors-for-light)
+    -  [`colors-for-dark`](#scribe.highlight/colors-for-dark) - Colors that look good on a dark terminal.
+    -  [`colors-for-light`](#scribe.highlight/colors-for-light) - Colors that look good on a light terminal.
     -  [`default-opts`](#scribe.highlight/default-opts) - Default options for add function.
     -  [`fg`](#scribe.highlight/fg) - Return a string wrapped in the proper escape codes to set the foreground color in the passed string.
     -  [`rgb-code`](#scribe.highlight/rgb-code) - Generate 8-bit RGB code.
@@ -40,38 +40,42 @@ Highlight regex matches in line string by adding color. All instances of the
   multiple runs.
 
   Options include:
-  * `:colors`   - Which set of colors to use. Default is colors suitable for a
-                  dark background (colors-for-dark). For light backgrounds, use
-                  colors-for-light.
+  * `:colors`   - Which set of colors to use. Can be either a keyword or vector
+                  of colors. Default is colors suitable for a dark background
+                  (`:colors-for-dark`). For light backgrounds, use `:colors-for-light`.
   * `:explicit` - Explicit colors for specific matched strings. Map of string to
                   color code.
   * `:offset`   - Additional offset after calculating color code. Defaults to 0.
   * `:reverse?` - Should matches be reversed before selecting a color. Setting
                   this to true can help differentiate matches that share a common
                   prefix.
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L76-L96">Source</a></sub></p>
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L94-L114">Source</a></sub></p>
 
 ## <a name="scribe.highlight/bg">`bg`</a><a name="scribe.highlight/bg"></a>
 ``` clojure
 
-(bg string color)
+(bg string color-code)
 ```
 
 Return a string wrapped in the proper escape codes to set the background
   color in the passed string.
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L49-L53">Source</a></sub></p>
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L53-L57">Source</a></sub></p>
 
 ## <a name="scribe.highlight/colors-for-dark">`colors-for-dark`</a><a name="scribe.highlight/colors-for-dark"></a>
 
 
 
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L28-L28">Source</a></sub></p>
+
+Colors that look good on a dark terminal.
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L28-L30">Source</a></sub></p>
 
 ## <a name="scribe.highlight/colors-for-light">`colors-for-light`</a><a name="scribe.highlight/colors-for-light"></a>
 
 
 
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L31-L31">Source</a></sub></p>
+
+Colors that look good on a light terminal.
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L33-L35">Source</a></sub></p>
 
 ## <a name="scribe.highlight/default-opts">`default-opts`</a><a name="scribe.highlight/default-opts"></a>
 
@@ -79,17 +83,17 @@ Return a string wrapped in the proper escape codes to set the background
 
 
 Default options for add function.
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L69-L74">Source</a></sub></p>
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L73-L78">Source</a></sub></p>
 
 ## <a name="scribe.highlight/fg">`fg`</a><a name="scribe.highlight/fg"></a>
 ``` clojure
 
-(fg string color)
+(fg string color-code)
 ```
 
 Return a string wrapped in the proper escape codes to set the foreground
   color in the passed string.
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L43-L47">Source</a></sub></p>
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/highlight.clj#L47-L51">Source</a></sub></p>
 
 ## <a name="scribe.highlight/rgb-code">`rgb-code`</a><a name="scribe.highlight/rgb-code"></a>
 ``` clojure

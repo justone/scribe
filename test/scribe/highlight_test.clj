@@ -8,8 +8,12 @@
            (highlight/add "foo bar baz" #"foo")))
     (is (= "[38;5;96mfoo[0m bar [38;5;190mbaz[0m"
            (highlight/add "foo bar baz" #"foo|baz")))
-    (is (= "[38;5;160mfoo[0m bar [38;5;49mbaz[0m"
-           (highlight/add "foo bar baz" #"foo|baz" (assoc highlight/default-opts :colors highlight/colors-for-light)))))
+    (doseq [color-opt [highlight/colors-for-dark :colors-for-dark :invalid-colors nil]]
+      (is (= "[38;5;96mfoo[0m bar [38;5;190mbaz[0m"
+           (highlight/add "foo bar baz" #"foo|baz" (assoc highlight/default-opts :colors color-opt)))))
+    (doseq [light-opt [highlight/colors-for-light :colors-for-light]]
+      (is (= "[38;5;160mfoo[0m bar [38;5;49mbaz[0m"
+             (highlight/add "foo bar baz" #"foo|baz" (assoc highlight/default-opts :colors light-opt))))))
 
   (let [opts-with-offset (assoc highlight/default-opts :offset 10)]
     (testing "offset makes colors different"
