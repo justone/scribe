@@ -53,12 +53,12 @@
             })))
 
 (defn clean
-  "TBD"
+  "Clean up."
   [_opts]
   (b/delete {:path "target"}))
 
 (defn test
-  "TBD"
+  "Run tests in both Clojure and Babashka."
   [_opts]
   (doseq [cmd [["clojure" "-M:test"]
                ["bb" "test"]]
@@ -68,24 +68,35 @@
       (throw (ex-info "Failure" {})))))
 
 (defn jar
-  "TBD"
+  "Create jar."
   [opts]
   (let [opts (base-opts opts)]
     (b/write-pom opts)
     (b/copy-dir {:src-dirs ["src"] :target-dir class-dir})
     (b/jar opts)))
 
+(defn- deploy-opts
+  [location opts]
+  {:installer location
+   :artifact (b/resolve-path (:jar-file opts))
+   :pom-file (b/pom-path (select-keys opts [:lib :class-dir]))})
+
 (defn deploy
-  "TBD"
+  "Deploy to clojars. Requires CLOJARS_PASSWORD and CLOJARS_USERNAME."
   [opts]
-  (let [opts (base-opts opts)]
-    (dd/deploy {:installer :remote
-                :artifact (b/resolve-path (:jar-file opts))
-                :pom-file (b/pom-path (select-keys opts [:lib :class-dir]))})))
+  (dd/deploy (deploy-opts :remote (base-opts opts))))
+
+(defn install
+  "Install into local .m2 repository."
+  [opts]
+  (dd/deploy (deploy-opts :local (base-opts opts))))
 
 (comment
   (clean nil)
   (test nil)
   (jar {:snapshot true})
   (jar {:snapshot false})
+
+  (deploy-opts :remote (base-opts nil))
+  (deploy-opts :local (base-opts nil))
   )
