@@ -2,13 +2,19 @@
  ;; Keep these in sync with deps.edn
  :deps {justone/scribe {:local/root "."}}
  :tasks
- {test {:extra-paths ["test"]
-        :extra-deps {io.github.cognitect-labs/test-runner
-                     {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
-        :task (exec 'cognitect.test-runner.api/test)
-        :exec-args {:dirs ["test"]}
-        :org.babashka/cli {:coerce {:nses [:symbol]
-                                    :vars [:symbol]}}}
+ {jar {:doc "Create library jar" :task (shell "clojure -T:build jar")}
+  clean {:doc "Clean built artifacts" :task (shell "clojure -T:build clean")}
+  test {:doc "Run tests in Clojure and Babashka" :task (shell "clojure -T:build test")}
+  deploy {:doc "Deploy release to clojars" :task (shell "clojure -T:build deploy")}
+  install {:doc "Install jar locally" :task (shell "clojure -T:build install")}
+  bb-test {:doc "Internal: run tests just in Babashka"
+           :extra-paths ["test"]
+           :extra-deps {io.github.cognitect-labs/test-runner
+                        {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
+           :task (exec 'cognitect.test-runner.api/test)
+           :exec-args {:dirs ["test"]}
+           :org.babashka/cli {:coerce {:nses [:symbol]
+                                       :vars [:symbol]}}}
   quickdoc {:doc "Invoke quickdoc"
             :extra-deps {io.github.borkdude/quickdoc {:git/sha "7c8bef54eda28367193ec433af01bb940114f012"}}
             :task (exec 'quickdoc.api/quickdoc)

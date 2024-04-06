@@ -61,7 +61,7 @@
   "Run tests in both Clojure and Babashka."
   [_opts]
   (doseq [cmd [["clojure" "-M:test"]
-               ["bb" "test"]]
+               ["bb" "bb-test"]]
           :let [_ (println "Running:" cmd)
                 {:keys [exit]} (b/process {:command-args cmd})]]
     (when-not (zero? exit)
