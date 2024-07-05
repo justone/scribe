@@ -1,6 +1,6 @@
 (ns scribe.opts-test
   (:require [clojure.string :as string]
-            [clojure.test :refer [deftest is]]
+            [clojure.test :refer [deftest is testing]]
             [scribe.opts :as opts]))
 
 (deftest validate-test
@@ -34,4 +34,10 @@
                             :exit 1 :wrap-context true}
                            "test"
                            {:summary "-h help"})))
+  (testing "default no context"
+    (is (= {:help "error message",
+            :exit 1}
+           (opts/format-help {:message "error message" :exit 1}
+                             "test"
+                             {:summary "-h help"}))))
   )
