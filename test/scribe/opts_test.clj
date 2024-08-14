@@ -1,7 +1,21 @@
 (ns scribe.opts-test
-  (:require [clojure.string :as string]
+  (:require [babashka.tasks :as tasks]
+            [clojure.string :as string]
             [clojure.test :refer [deftest is testing]]
             [scribe.opts :as opts]))
+
+(deftest detect-script-name-test
+  (testing "babashka.file property"
+    (try
+    (System/setProperty "babashka.file" "foo")
+    (is (= "foo" (opts/detect-script-name)) )
+    (finally (System/clearProperty "babashka.file"))))
+  (testing "babashka.tasks"
+    (binding [tasks/*task* {:name "foo:bar"}]
+      (tasks/current-task)
+      (is (= "bb foo:bar" (opts/detect-script-name)) )))
+  (testing "fallback"
+    (is (= "script" (opts/detect-script-name)) )))
 
 (deftest validate-test
   (is (= {:exit 0

@@ -9,4 +9,5 @@
  :deps {cheshire/cheshire {:mvn/version "5.10.0"}
         org.clojure/tools.cli {:mvn/version "1.0.206"}
         babashka/process {:mvn/version "0.4.16"}
+        io.github.babashka/tasks {:sha "d7085862774d0a8df9bc43e9aa969896741bc0e7"}
         babashka/fs {:mvn/version "0.2.15"}}}
