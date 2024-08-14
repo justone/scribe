@@ -2,11 +2,11 @@
  ;; Keep these in sync with deps.edn
  :deps {justone/scribe {:local/root "."}}
  :tasks
- {jar {:doc "Create library jar" :task (shell "clojure -T:build jar")}
-  clean {:doc "Clean built artifacts" :task (shell "clojure -T:build clean")}
-  test {:doc "Run tests in Clojure and Babashka" :task (shell "clojure -T:build test")}
-  deploy {:doc "Deploy release to clojars" :task (shell "clojure -T:build deploy")}
-  install {:doc "Install jar locally" :task (shell "clojure -T:build install")}
+ {jar {:doc "Create library jar" :task (apply shell "clojure -T:build jar" *command-line-args*)}
+  clean {:doc "Clean built artifacts" :task (apply shell "clojure -T:build clean" *command-line-args*)}
+  test {:doc "Run tests in Clojure and Babashka" :task (apply shell "clojure -T:build test" *command-line-args*)}
+  deploy {:doc "Deploy release to clojars" :task (apply shell "clojure -T:build deploy" *command-line-args*)}
+  install {:doc "Install jar locally" :task (apply shell "clojure -T:build install" *command-line-args*)}
   bb-test {:doc "Internal: run tests just in Babashka"
            :extra-paths ["test"]
            :extra-deps {io.github.cognitect-labs/test-runner
