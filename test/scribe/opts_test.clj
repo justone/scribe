@@ -7,9 +7,9 @@
 (deftest detect-script-name-test
   (testing "babashka.file property"
     (try
-    (System/setProperty "babashka.file" "foo")
-    (is (= "foo" (opts/detect-script-name)) )
-    (finally (System/clearProperty "babashka.file"))))
+      (System/setProperty "babashka.file" "foo")
+      (is (= "foo" (opts/detect-script-name)) )
+      (finally (System/clearProperty "babashka.file"))))
   (testing "babashka.tasks"
     (binding [tasks/*task* {:name "foo:bar"}]
       (tasks/current-task)
