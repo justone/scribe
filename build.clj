@@ -15,13 +15,12 @@
   clojure -A:deps -T:build help/doc"
   (:refer-clojure :exclude [test])
   (:require
+    [clojure.edn :as edn]
     [clojure.tools.build.api :as b]
     [deps-deploy.deps-deploy :as dd]))
 
 (def lib 'org.endot/scribe)
-(defn- the-version [patch] (format "0.1.%s" patch))
-(def version (the-version (b/git-count-revs nil)))
-(def snapshot (the-version "999-SNAPSHOT"))
+(def version (-> "version.edn" slurp edn/read-string :version))
 (def class-dir "target/classes")
 
 (defn- pom-template [version]
@@ -42,15 +41,13 @@
 
 (defn- base-opts
   [opts]
-  (let [v (if (:snapshot opts) snapshot version)]
-    (merge opts
-           {:basis (b/create-basis {})
-            :class-dir class-dir
-            :jar-file  (format "target/%s-%s.jar" lib v)
-            :lib lib
-            :pom-data (pom-template v)
-            :version v
-            })))
+  (merge opts
+         {:basis (b/create-basis {})
+          :class-dir class-dir
+          :jar-file  (format "target/%s-%s.jar" lib version)
+          :lib lib
+          :pom-data (pom-template version)
+          :version version}))
 
 (defn clean
   "Clean up."
@@ -94,8 +91,7 @@
 (comment
   (clean nil)
   (test nil)
-  (jar {:snapshot true})
-  (jar {:snapshot false})
+  (jar nil)
 
   (deploy-opts :remote (base-opts nil))
   (deploy-opts :local (base-opts nil))
