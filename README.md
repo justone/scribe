@@ -7,8 +7,8 @@ A few utility namespaces extracted from working Babashka scripts and designed to
 Namespaces included:
 
 * [scribe.highlight](./API.md#scribe.highlight) - Highlights strings with color by regex
-* [scribe.opts](./API.md#scribe.opts) - Handle command line options functionally.
-* [scribe.main](./API.md#scribe.main) - High level script helpers.
+* [scribe.opts](./API.md#scribe.opts) - Handle command line options functionally
+* [scribe.main](./API.md#scribe.main) - High level script helpers
 * [scribe.string](./API.md#scribe.string) - String utilities
 
 # License
