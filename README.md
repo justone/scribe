@@ -11,6 +11,12 @@ Namespaces included:
 * [scribe.main](./API.md#scribe.main) - High level script helpers
 * [scribe.string](./API.md#scribe.string) - String utilities
 
+# Build/release
+
+```shell
+clojure -A:deps -T:build help/doc
+```
+
 # License
 
 Copyright © 2024 Nate Jones

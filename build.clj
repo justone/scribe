@@ -9,7 +9,7 @@
 
   Run tests via:
   clojure -M:test
-  bb test
+  bb bb-test
 
   For more information, run:
   clojure -A:deps -T:build help/doc"
