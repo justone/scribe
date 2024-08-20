@@ -1,6 +1,6 @@
 #!/usr/bin/env bb
 
-(ns hello-world
+(ns opts
   (:require [clojure.tools.cli :refer [parse-opts]]
             [babashka.deps :as deps]))
 
