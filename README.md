@@ -2,7 +2,8 @@
 
 A few utility namespaces extracted from working Babashka scripts and designed to solve common problems simply.
 
-[API](./API.md) documentation.
+* [API documentation](./API.md)
+* [CHANGELOG](./CHANGELOG.md)
 
 Namespaces included:
 
