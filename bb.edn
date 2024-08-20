@@ -1,0 +1,22 @@
+{:paths ["src"]
+ ;; Keep these in sync with deps.edn
+ :deps {justone/scribe {:local/root "."}}
+ :tasks
+ {jar {:doc "Create library jar" :task (apply shell "clojure -T:build jar" *command-line-args*)}
+  clean {:doc "Clean built artifacts" :task (apply shell "clojure -T:build clean" *command-line-args*)}
+  test {:doc "Run tests in Clojure and Babashka" :task (apply shell "clojure -T:build test" *command-line-args*)}
+  deploy {:doc "Deploy release to clojars" :task (apply shell "clojure -T:build deploy" *command-line-args*)}
+  install {:doc "Install jar locally" :task (apply shell "clojure -T:build install" *command-line-args*)}
+  bb-test {:doc "Internal: run tests just in Babashka"
+           :extra-paths ["test"]
+           :extra-deps {io.github.cognitect-labs/test-runner
+                        {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
+           :task (exec 'cognitect.test-runner.api/test)
+           :exec-args {:dirs ["test"]}
+           :org.babashka/cli {:coerce {:nses [:symbol]
+                                       :vars [:symbol]}}}
+  quickdoc {:doc "Invoke quickdoc"
+            :extra-deps {io.github.borkdude/quickdoc {:git/sha "7c8bef54eda28367193ec433af01bb940114f012"}}
+            :task (exec 'quickdoc.api/quickdoc)
+            :exec-args {:git/branch "master"
+                        :github/repo "https://github.com/justone/scribe"}}}}
