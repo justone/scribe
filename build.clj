@@ -4,9 +4,6 @@
   clojure -T:build jar
   clojure -T:build deploy
 
-  Add `:snapshot true` args to the above
-  to create/deploy snapshot version.
-
   Run tests via:
   clojure -M:test
   bb bb-test
