@@ -181,7 +181,7 @@ A set of functions to handle command line options in an opinionated
 
 Detect the name of the currently running script, for usage in the printed
   help.
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/opts.clj#L61-L70">Source</a></sub></p>
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/opts.clj#L62-L74">Source</a></sub></p>
 
 ## <a name="scribe.opts/format-help">`format-help`</a><a name="scribe.opts/format-help"></a>
 ``` clojure
@@ -192,7 +192,7 @@ Detect the name of the currently running script, for usage in the printed
 
 Take an error (as returned from [`validate`](#scribe.opts/validate)) and format the help message
   that will be printed to the end user.
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/opts.clj#L81-L96">Source</a></sub></p>
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/opts.clj#L85-L100">Source</a></sub></p>
 
 ## <a name="scribe.opts/print-and-exit">`print-and-exit`</a><a name="scribe.opts/print-and-exit"></a>
 ``` clojure
@@ -204,7 +204,7 @@ Print help message and exit. Accepts a map with `:help`
   and `:exit` keys.
 
   Uses the :babashka/exit ex-info trick to exit Babashka.
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/opts.clj#L98-L104">Source</a></sub></p>
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/opts.clj#L102-L108">Source</a></sub></p>
 
 ## <a name="scribe.opts/validate">`validate`</a><a name="scribe.opts/validate"></a>
 ``` clojure
@@ -228,7 +228,7 @@ Look for the most common of errors:
   * :exit - The numeric exit code that should be returned
   * :wrap-context - Whether or not to wrap the message with script help heading
                     and options documentation
-<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/opts.clj#L30-L59">Source</a></sub></p>
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/opts.clj#L31-L60">Source</a></sub></p>
 
 -----
 # <a name="scribe.string">scribe.string</a>
