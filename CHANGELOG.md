@@ -19,5 +19,5 @@ but instead follows [Break Versioning](https://www.taoensso.com/break-versioning
 * [API Documentation](./API.md) for all of the above.
 * [Example scripts](./samples/) showing usage of the above.
 
-[Unreleased]: https://github.com/justone/scribe/releases/tag/v1.0.0...HEAD
+[Unreleased]: https://github.com/justone/scribe/compare/v1.0.0...HEAD
 [1.0.0]: https://github.com/justone/scribe/releases/tag/v1.0.0
