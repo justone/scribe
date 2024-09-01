@@ -2,6 +2,8 @@
 
 A few utility namespaces extracted from working Babashka scripts and designed to solve common problems simply.
 
+Expanded and refined from [this idea](https://endot.org/2023/12/30/writing-babashka-scripts/#combining-power-with-ease-of-use).
+
 * [API documentation](./API.md)
 * [CHANGELOG](./CHANGELOG.md)
 
