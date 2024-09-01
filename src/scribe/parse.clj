@@ -1,8 +1,13 @@
 (ns scribe.parse
+  "Utilities to ease parsing incoming data, whether it's JSON or EDN.
+
+  By default, it will attempt to parse as JSON and EDN, but it's possible to
+  configure a custom list of parsers to attempt."
   (:require [cheshire.core :as json]
             [clojure.edn :as edn]))
 
 (def default-opts
+  "Default parsing options: try JSON parsing first and then EDN."
   {:parsers [:json :edn]})
 
 (defn- expand-parser
@@ -47,5 +52,5 @@
 (def
   ^{:arglists '([line])}
   default-parse
-  "Parse a single line using default options."
+  "Parse a single line using default options, trying both JSON and EDN parsing."
   (custom-parser default-opts))

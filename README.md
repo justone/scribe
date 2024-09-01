@@ -11,6 +11,7 @@ Namespaces included:
 * [scribe.opts](./API.md#scribe.opts) - Handle command line options functionally
 * [scribe.main](./API.md#scribe.main) - High level script helpers
 * [scribe.string](./API.md#scribe.string) - String utilities
+* [scribe.parse](./API.md#scribe.parse) - Parse incoming data resiliently
 
 # Build/release
 
