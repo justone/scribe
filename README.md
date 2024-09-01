@@ -1,5 +1,7 @@
 # Scribe - a library to help with writing Babashka scripts
 
+[![Clojars Project](https://img.shields.io/clojars/v/org.endot/scribe.svg)](https://clojars.org/org.endot/scribe)
+
 A few utility namespaces extracted from working Babashka scripts and designed to solve common problems simply.
 
 Expanded and refined from [this idea](https://endot.org/2023/12/30/writing-babashka-scripts/#combining-power-with-ease-of-use).
