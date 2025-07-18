@@ -30,6 +30,6 @@
      (or (some-> (or (opts/validate parsed (or usage ""))
                      (and validate-fn
                           (validate-fn parsed)))
-                 (opts/format-help script-name parsed)
+                 (opts/format-help script-name parsed opts)
                  (opts/print-and-exit))
          parsed))))

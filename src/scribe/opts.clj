@@ -75,7 +75,7 @@
 
 (def ^:private help-fmt
   (scribe.string/dedent
-    "usage: %s [opts]
+    "usage: %s [opts]%s
 
     %s
 
@@ -86,16 +86,23 @@
   "Take an error (as returned from `validate`) and format the help message
   that will be printed to the end user."
   ([errors parsed]
-   (format-help errors (detect-script-name) parsed))
-  ([errors script-name-or-ns parsed]
+   (format-help errors (detect-script-name) parsed nil))
+  ([errors parsed opts]
+   (let [[script-name parsed opts] (if (map? parsed)
+                                     [(detect-script-name) parsed opts]
+                                     [parsed opts nil])]
+     (format-help errors script-name parsed opts)))
+  ([errors script-name-or-ns parsed opts]
    (let [script-name (str script-name-or-ns)
          {:keys [summary]} parsed
          {:keys [message exit wrap-context]} errors
+         {:keys [extra-usage-args]} opts
+         final-extra-usage-args (or (some->> extra-usage-args (str " ")) "")
          final-message (-> message
                            scribe.string/dedent
                            (string/replace "SCRIPT_NAME" script-name))]
      {:help (if wrap-context
-              (format help-fmt script-name final-message summary)
+              (format help-fmt script-name final-extra-usage-args final-message summary)
               final-message)
       :exit exit})))
 
