@@ -18,6 +18,7 @@
     -  [`validate`](#scribe.opts/validate) - Look for the most common of errors: * <code>--help</code> was passed * clojure.tools.cli detected errors To detect other errors specific to a given script, wrap the call with an <code>or</code>, like this: (or (opts/validate parsed usage-text) (script-specific-validate parsed)) The script-specific-validate function should return a map with information about the error that occurred.
 -  [`scribe.string`](#scribe.string)  - String utilities.
     -  [`dedent`](#scribe.string/dedent) - Remove leading indent on strings.
+    -  [`strip-ansi-color`](#scribe.string/strip-ansi-color) - Strips ANSI color sequences from string.
 
 -----
 # <a name="scribe.config">scribe.config</a>
@@ -38,7 +39,7 @@ Simple config loading, based on global config and project-based overrides.
 Find and load the configuration for the provided app-name.
 
   The following files are loaded (if found) and merged:
-  - Root config: {app-name}.edn in $XDG_CONFIG_HOME
+  - Root config: {app-name}.edn in $XDG_CONFIG_HOME (usually ~/.config)
   - Project config: .{app-name}.edn in a parent directory
   - Personal config: .{app-name}.local.edn in a parent directory
 <p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/config.clj#L29-L41">Source</a></sub></p>
@@ -276,3 +277,12 @@ Remove leading indent on strings. Typically called on strings defined in
   scripts that are to be printed to the terminal. If leading indent is not
   passed, it will be detected from the first line with leading whitespace.
 <p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/string.clj#L14-L23">Source</a></sub></p>
+
+## <a name="scribe.string/strip-ansi-color">`strip-ansi-color`</a><a name="scribe.string/strip-ansi-color"></a>
+``` clojure
+
+(strip-ansi-color s)
+```
+
+Strips ANSI color sequences from string.
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/string.clj#L25-L29">Source</a></sub></p>

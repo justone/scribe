@@ -21,3 +21,9 @@
    (cond->> (string/split-lines string)
      indent (map #(string/replace % (re-pattern (str "^" indent)) ""))
      :always (string/join "\n"))))
+
+(defn strip-ansi-color
+  "Strips ANSI color sequences from string."
+  [s]
+  (when s
+    (string/replace s #"\033\[[0-9;]*m" "")))
