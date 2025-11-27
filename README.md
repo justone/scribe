@@ -11,9 +11,10 @@ Expanded and refined from [this idea](https://endot.org/2023/12/30/writing-babas
 
 Namespaces included:
 
+* [scribe.config](./API.md#scribe.config) - Simple config loading
 * [scribe.highlight](./API.md#scribe.highlight) - Highlights strings with color by regex
-* [scribe.opts](./API.md#scribe.opts) - Handle command line options functionally
 * [scribe.main](./API.md#scribe.main) - High level script helpers
+* [scribe.opts](./API.md#scribe.opts) - Handle command line options functionally
 * [scribe.string](./API.md#scribe.string) - String utilities
 
 # Build/release

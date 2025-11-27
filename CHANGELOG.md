@@ -8,6 +8,10 @@ but instead follows [Break Versioning](https://www.taoensso.com/break-versioning
 
 ## [Unreleased]
 
+### Added
+
+* `scribe.config` - Simple config loading
+
 ## [1.0.0] - 2024-08-19
 
 ### Added

@@ -1,4 +1,6 @@
 # Table of contents
+-  [`scribe.config`](#scribe.config)  - Simple config loading, based on global config and project-based overrides.
+    -  [`load-config`](#scribe.config/load-config) - Find and load the configuration for the provided app-name.
 -  [`scribe.highlight`](#scribe.highlight)  - Utilities for highlighting portions of strings with color.
     -  [`add`](#scribe.highlight/add) - Highlight regex matches in line string by adding color.
     -  [`bg`](#scribe.highlight/bg) - Return a string wrapped in the proper escape codes to set the background color in the passed string.
@@ -16,6 +18,30 @@
     -  [`validate`](#scribe.opts/validate) - Look for the most common of errors: * <code>--help</code> was passed * clojure.tools.cli detected errors To detect other errors specific to a given script, wrap the call with an <code>or</code>, like this: (or (opts/validate parsed usage-text) (script-specific-validate parsed)) The script-specific-validate function should return a map with information about the error that occurred.
 -  [`scribe.string`](#scribe.string)  - String utilities.
     -  [`dedent`](#scribe.string/dedent) - Remove leading indent on strings.
+
+-----
+# <a name="scribe.config">scribe.config</a>
+
+
+Simple config loading, based on global config and project-based overrides.
+
+
+
+
+## <a name="scribe.config/load-config">`load-config`</a><a name="scribe.config/load-config"></a>
+``` clojure
+
+(load-config app-name)
+(load-config dir app-name)
+```
+
+Find and load the configuration for the provided app-name.
+
+  The following files are loaded (if found) and merged:
+  - Root config: {app-name}.edn in $XDG_CONFIG_HOME
+  - Project config: .{app-name}.edn in a parent directory
+  - Personal config: .{app-name}.local.edn in a parent directory
+<p><sub><a href="https://github.com/justone/scribe/blob/master/src/scribe/config.clj#L29-L41">Source</a></sub></p>
 
 -----
 # <a name="scribe.highlight">scribe.highlight</a>
